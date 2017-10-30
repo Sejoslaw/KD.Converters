@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace KD.Converters.Collections
@@ -19,15 +18,7 @@ namespace KD.Converters.Collections
         public static IList<TValue> ToList<TValue, TListType>(this IEnumerable<TValue> source, object[] newListArgs = null)
             where TListType : IList<TValue>
         {
-            TListType list;
-            if (newListArgs == null)
-            {
-                list = Activator.CreateInstance<TListType>();
-            }
-            else
-            {
-                list = (TListType)Activator.CreateInstance(typeof(TListType), newListArgs);
-            }
+            TListType list = source.Clone(newListArgs).Parse<TListType>();
             source.ToList().ForEach(model => list.Add(model));
             return list;
         }

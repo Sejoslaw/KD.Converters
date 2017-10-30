@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace KD.Converters.Collections
@@ -23,15 +22,7 @@ namespace KD.Converters.Collections
         public static ISet<TValue> ToSet<TValue, TSetType>(this IEnumerable<TValue> source, object[] newSetArgs = null)
             where TSetType : ISet<TValue>
         {
-            TSetType set;
-            if (newSetArgs == null)
-            {
-                set = Activator.CreateInstance<TSetType>();
-            }
-            else
-            {
-                set = (TSetType)Activator.CreateInstance(typeof(TSetType), newSetArgs);
-            }
+            TSetType set = source.Clone(newSetArgs).Parse<TSetType>();
             source.ToList().ForEach(model => set.Add(model));
             return set;
         }
